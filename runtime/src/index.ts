@@ -12,4 +12,7 @@ export function health(): { ok: true; service: string; tenants: TenantSlug[] } {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   console.log(JSON.stringify(health()));
+  setInterval(() => {
+    // no-op scaffold service heartbeat; real runtime loop lands in a later task.
+  }, 60_000);
 }
