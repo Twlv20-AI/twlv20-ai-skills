@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy on droplet
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DROPLET_HOST }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd /opt/twlv20-ai-skills
+            git pull --ff-only origin main
+            cd runtime
+            npm ci
+            npm run build
+            sudo systemctl restart twlv20-ai-runtime.service
+            sudo systemctl --no-pager --full status twlv20-ai-runtime.service
