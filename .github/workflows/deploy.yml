@@ -18,7 +18,9 @@ jobs:
           script: |
             set -euo pipefail
             cd /opt/twlv20-ai-skills
-            git pull --ff-only origin main
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fdx -e runtime/node_modules/
             cd runtime
             npm ci
             npm run build
