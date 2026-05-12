@@ -126,3 +126,28 @@ Known blockers:
 The original source Word documents were removed from the GitHub repo after hardening because they may contain obsolete access handoff material. Current access instructions are maintained in the runbooks and ClickUp without secrets.
 
 ClickUp `Droplet Access` was sanitized to remove exposed credential material and now only documents key-only access.
+
+## GitHub public visibility + branch ruleset update — 2026-05-12
+
+Per Jonathan/Jessie approval, the repository was made public so GitHub branch protection/rules could be enabled without upgrading the plan.
+
+Secret scan before public visibility found no secret values; only the Actions secret reference `${{ secrets.DROPLET_SSH_KEY }}` was present.
+
+Repository visibility:
+
+- `Twlv20-AI/twlv20-ai-skills`: public
+
+Active branch ruleset:
+
+- Ruleset ID: `16263909`
+- Name: `main requires PR and CI`
+- Target: branch / default branch
+- Enforcement: active
+- Rules include:
+  - pull request required
+  - 1 approving review required
+  - stale reviews dismissed on push
+  - required status checks: `runtime`, `schema-smoke`
+  - strict status checks policy
+  - non-fast-forward protection
+  - deletion protection
